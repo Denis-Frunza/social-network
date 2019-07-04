@@ -18,33 +18,33 @@ def email_exists(form, field):
 class RegistrationForm(Form):
     username = StringField(
         'Username',
-        validators = [
-        DataRequired(),
-        Regexp(r'^[a-zA-Z0-9_] + $', 
-            message='message should be numbers or letter'),
-        name_exists
-        ]
-        )
+        validators=[
+            DataRequired(),
+            Regexp(
+                r'^[a-zA-Z0-9_]+$',
+                message=("Username should be one word, letters, "
+                         "numbers, and underscores only.")
+            ),
+            name_exists
+        ])
     email = StringField(
         'Email',
-        validators = [
-        DataRequired(),
-        Email(),
-        email_exists
-        ]
-        )
+        validators=[
+            DataRequired(),
+            Email(),
+            email_exists
+        ])
     password = PasswordField(
         'Password',
-        validators = [
-        DataRequired(),
-        Length(min=2),
-        EqualTo('password2', message='Password must mutch')
-        ]
-        )
+        validators=[
+            DataRequired(),
+            Length(min=2),
+            EqualTo('password2', message='Passwords must match')
+        ])
     password2 = PasswordField(
         'Confirm Password',
-        validators= [DataRequired()]
-        )
+        validators=[DataRequired()]
+    )
 
 class LoginForm(Form):
     email = StringField('Email',validators = [DataRequired(),Email()])

@@ -43,7 +43,7 @@ def after_request(response):
 def register():
     form=forms.RegistrationForm()
     if form.validate_on_submit():
-        flash("You registered")
+        flash("You registered",'success')
         models.User.create_user(
             username=form.username.data,
             email=form.email.data,
@@ -111,6 +111,50 @@ def logout():
     logout_user()
     flash("You've been logout", "success")
     return redirect(url_for('index'))
+
+@app.route('/follow/<username>')
+@login_required
+def follow(username):
+    try:
+        to_user = models.User.get(models.User.username**username)
+
+    except models.DoesNotExist:
+        pass
+
+    else:
+        try:
+            models.Relationship.create(
+                from_user = g.user._get_current_object(),
+                to_user=to_user
+                )
+        except models.IntegrityError:
+            pass
+        else:
+            flash(f"You're a now following {to_user.username}",'success')
+
+    return redirect(url_for('stream', username=to_user.username))
+
+@app.route('/unfollow/<username>')
+@login_required
+def unfollow(username):
+    try:
+        to_user = models.User.get(models.User.username**username)
+
+    except models.DoesNotExist:
+        pass
+
+    else:
+        try:
+            models.Relationship.get(
+                from_user = g.user._get_current_object(),
+                to_user=to_user
+                ).delete_instance()
+        except models.IntegrityError:
+            pass
+        else:
+            flash(f"You're unfollowed {to_user.username}",'success')
+
+    return redirect(url_for('stream', username=to_user.username))
 
 
 if __name__== '__main__':
