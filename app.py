@@ -64,7 +64,7 @@ def login():
         else:
             if check_password_hash(user.password, form.password.data):
                 login_user(user)
-                flash("You've have been logged in !","success")
+                flash("You've been logged in !","success")
                 return redirect(url_for('index'))
             else:
                 flash("Wrong credentials","error")
@@ -104,6 +104,10 @@ def stream(username=None):
         template = 'user_stream.html'
     return render_template(template, stream=stream, user=user)
 
+@app.route('/post/<int:post_id>')
+def view_post(post_id):
+    posts = models.Post.select().where(models.Post.id == post_id)
+    return render_template('stream.html',stream=posts)
 
 @app.route('/logout')
 @login_required
