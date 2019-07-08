@@ -1,6 +1,8 @@
 from flask import Flask, g, render_template, flash, redirect, url_for, abort
 from flask_bcrypt import check_password_hash
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
+from flask_bcrypt import Bcrypt, generate_password_hash
+
 
 
 import forms
@@ -149,7 +151,6 @@ def follow(username):
 def unfollow(username):
     try:
         to_user = models.User.get(models.User.username**username)
-
     except models.DoesNotExist:
         abort(404)
     else:
@@ -164,6 +165,17 @@ def unfollow(username):
             flash(f"You're unfollowed {to_user.username}",'success')
 
     return redirect(url_for('stream', username=to_user.username))
+
+@app.route('/change_password/<username>', methods=('GET', 'POST'))
+@login_required
+def change_password(username):
+    form=forms.ChangePasswordForm()
+    if form.validate_on_submit():
+        models.User.update(password=generate_password_hash(form.password_to_change.data)).where(
+            models.User.username == username).execute() 
+        flash('Password has been updated!', 'success')
+        return redirect(url_for('index'))
+    return render_template('profile.html', form=form)
 
 @app.errorhandler(404)
 def not_found(error):

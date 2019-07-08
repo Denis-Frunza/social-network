@@ -53,3 +53,6 @@ class LoginForm(Form):
 
 class PostForm(Form):
     content = TextAreaField("test", validators=[DataRequired()])
+
+class ChangePasswordForm(Form):
+    password_to_change = PasswordField('Password',validators=[DataRequired()])

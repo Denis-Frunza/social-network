@@ -44,6 +44,8 @@ class User(UserMixin, Model):
 
             )
         )
+    def change_passsword(self):
+        pass
     
     @classmethod
     def create_user(cls, username, email, password, admin=False):
@@ -79,6 +81,7 @@ class Relationship(Model):
             (('from_user', 'to_user'), True),
 
         )
+
 
 def initialize():
     DATABASE.connect()

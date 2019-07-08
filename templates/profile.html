@@ -1,0 +1,10 @@
+{% extends 'layout.html'%}
+{% from 'macros.html' import render_field %}
+
+{% block content %}
+<form method="POST" action="" class="form">
+    {{ form.hidden_tag() }}
+    {{ render_field(form.password_to_change) }}
+    <button type="submit" id="submit">Change password</button>
+</form>
+{% endblock %}
