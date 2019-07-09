@@ -7,6 +7,7 @@ from flask_bcrypt import Bcrypt, generate_password_hash
 
 import forms
 import models
+from resources.reviews import review_api
 
 
 DEBUG = True
@@ -14,6 +15,7 @@ PORT = 8000
 HOST = '0.0.0.0'
 
 app =Flask(__name__)
+app.register_blueprint(review_api)
 app.secret_key = 'generated_string'
 
 
