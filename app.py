@@ -3,16 +3,11 @@ from flask_bcrypt import check_password_hash
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from flask_bcrypt import Bcrypt, generate_password_hash
 
-
-
+import config
 import forms
 import models
 from resources.reviews import review_api
 
-
-DEBUG = True
-PORT = 8000
-HOST = '0.0.0.0'
 
 app =Flask(__name__)
 app.register_blueprint(review_api)
@@ -193,5 +188,5 @@ if __name__== '__main__':
                                 )
     except ValueError:
         pass
-    app.run(debug=DEBUG, port=PORT, host=HOST)
+    app.run(debug=config.DEBUG, port=config.PORT, host=config.HOST)
 
