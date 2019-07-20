@@ -3,16 +3,21 @@ from flask_bcrypt import check_password_hash
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from flask_bcrypt import Bcrypt, generate_password_hash
 
-import config
-import forms
-import models
+
+from config import BaseConfig
 from resources.reviews import review_api
 
 
-app =Flask(__name__)
-app.register_blueprint(review_api)
-app.secret_key = 'generated_string'
+import forms
+import models
 
+
+app = Flask(__name__)
+app.register_blueprint(review_api)
+app.secret_key = BaseConfig.SECRET_KEY #'generated_string'
+
+
+#app.config.from_object('socialnetwork_app.config.DevelopmentConfig')
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -188,5 +193,5 @@ if __name__== '__main__':
                                 )
     except ValueError:
         pass
-    app.run(debug=config.DEBUG, port=config.PORT, host=config.HOST)
+    app.run(debug=BaseConfig.DEBUG, port=BaseConfig.PORT, host=BaseConfig.HOST)
 
