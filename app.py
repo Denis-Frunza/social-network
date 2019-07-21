@@ -17,7 +17,7 @@ app.register_blueprint(review_api)
 app.secret_key = BaseConfig.SECRET_KEY #'generated_string'
 
 
-#app.config.from_object('socialnetwork_app.config.DevelopmentConfig')
+#app.config.from_object('config.DevelopmentConfig')
 
 login_manager = LoginManager()
 login_manager.init_app(app)
